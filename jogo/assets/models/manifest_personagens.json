@@ -1,0 +1,266 @@
+{
+ "heroi": {
+  "zmin": 2.376866881093065e-08,
+  "zmax": 0.9497070908546448,
+  "height": 0.949707067085976,
+  "hips": [
+   -0.20888233184814453,
+   -0.005856492090970278,
+   0.4963274300098419
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ },
+ "esqueleto": {
+  "zmin": 2.3494909129340158e-08,
+  "zmax": 0.9995117783546448,
+  "height": 0.9995117548597356,
+  "hips": [
+   -0.2869691848754883,
+   0.03709130734205246,
+   0.4821864068508148
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ },
+ "cultista": {
+  "zmin": 5.31454453778224e-08,
+  "zmax": 0.9995117783546448,
+  "height": 0.9995117252091994,
+  "hips": [
+   0.0019521787762641907,
+   0.025378230959177017,
+   0.6422644257545471
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ },
+ "bruto": {
+  "zmin": 6.809981556443745e-08,
+  "zmax": 0.9995118379592896,
+  "height": 0.999511769859474,
+  "hips": [
+   -0.01756952702999115,
+   -0.02928256057202816,
+   0.5251342058181763
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ },
+ "diabrete": {
+  "zmin": 4.7371042199984004e-08,
+  "zmax": 0.9995118379592896,
+  "height": 0.9995117905882474,
+  "hips": [
+   -0.056612953543663025,
+   0.021473852917551994,
+   0.40409955382347107
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ },
+ "chefe": {
+  "zmin": -2.413974300452537e-07,
+  "zmax": 1.0,
+  "height": 1.00000024139743,
+  "hips": [
+   0.001953125,
+   0.001953125,
+   0.525390625
+  ],
+  "anims": {
+   "idle": {
+    "loop": true,
+    "frames": 60
+   },
+   "walk": {
+    "loop": true,
+    "frames": 24
+   },
+   "attack": {
+    "loop": false,
+    "frames": 30
+   },
+   "hit": {
+    "loop": false,
+    "frames": 15
+   },
+   "death": {
+    "loop": false,
+    "frames": 45
+   },
+   "cast": {
+    "loop": false,
+    "frames": 34
+   },
+   "spin": {
+    "loop": false,
+    "frames": 32
+   },
+   "victory": {
+    "loop": false,
+    "frames": 62
+   }
+  }
+ }
+}

@@ -1,0 +1,13 @@
+# Cache e importação do Godot (o editor recria na primeira abertura)
+.godot/
+*.translation
+export_credentials.cfg
+
+# Saídas geradas
+web/build/
+partidas/
+
+# Sistema
+.DS_Store
+Thumbs.db
+__pycache__/

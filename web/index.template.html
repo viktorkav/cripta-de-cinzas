@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Cripta de Cinzas</title>
+  <link rel="icon" type="image/png" href="index.icon.png">
+  <link rel="apple-touch-icon" href="index.apple-touch-icon.png">
+  <link rel="license" href="licencas/Godot-LICENSE.txt">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f1e5d1;
+      --muted: #bcaa91;
+      --gold: #d7b375;
+      --line: #56422d;
+      font-family: system-ui, sans-serif;
+      background: #120e0c;
+      color: var(--ink);
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 24px 16px;
+      background:
+        radial-gradient(ellipse at 50% 0%, #492417 0%, transparent 58%),
+        #120e0c;
+    }
+
+    body.playing { padding: 0; overflow: hidden; background: #000; }
+
+    .panel {
+      width: min(100%, 29rem);
+      padding: clamp(1.25rem, 4vw, 2.15rem);
+      background: #1d1612;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 70px #0008;
+    }
+
+    h1 {
+      margin: 0 0 1.6rem;
+      color: var(--gold);
+      font: 600 clamp(1.65rem, 6vw, 2.4rem)/1.15 Georgia, serif;
+      text-align: center;
+    }
+
+    fieldset { margin: 0; border: 0; padding: 0; }
+    legend {
+      padding: 0;
+      margin-bottom: .55rem;
+      color: var(--gold);
+      font-size: .875rem;
+      font-weight: 650;
+    }
+
+    .option {
+      min-height: 4.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .7rem 0;
+      border-top: 1px solid var(--line);
+      cursor: pointer;
+    }
+
+    .option:last-of-type { border-bottom: 1px solid var(--line); }
+    .option strong { display: block; font-size: .95rem; font-weight: 650; }
+    .option small, .download { color: var(--muted); font-size: .82rem; }
+    .option small { display: block; margin-top: .2rem; }
+
+    .toggle {
+      appearance: none;
+      flex: none;
+      width: 2.65rem;
+      height: 1.55rem;
+      margin: 0;
+      padding: .16rem;
+      border: 1px solid #8a7054;
+      border-radius: 1rem;
+      background: #2d231d;
+      color: #d0bda0;
+      cursor: pointer;
+    }
+
+    .toggle::before {
+      content: "";
+      display: block;
+      width: 1.1rem;
+      height: 1.1rem;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .toggle:checked { background: var(--gold); color: #2b1a10; border-color: var(--gold); }
+    .toggle:checked::before { transform: translateX(1.07rem); }
+    :focus-visible { outline: 2px solid #f5d89e; outline-offset: 4px; }
+
+    .download { margin: 1rem 0 .8rem; min-height: 1.25em; }
+
+    button {
+      width: 100%;
+      min-height: 2.75rem;
+      border: 1px solid var(--gold);
+      border-radius: .2rem;
+      background: var(--gold);
+      color: #21140d;
+      font: 700 1rem system-ui, sans-serif;
+      cursor: pointer;
+    }
+
+    button:hover { background: #e7c990; }
+    #status { text-align: center; }
+    #status p { line-height: 1.5; margin: 0; }
+    #status progress { width: 100%; margin-top: .9rem; accent-color: var(--gold); }
+    #retry { margin-top: 1rem; }
+
+    #canvas { display: block; margin: 0; padding: 0; border: 0; }
+    #canvas:focus { outline: none; }
+  </style>
+</head>
+<body>
+  <main id="launcher" class="panel">
+    <h1>Cripta de Cinzas</h1>
+    <form id="graphics">
+      <fieldset>
+        <legend>Opções gráficas</legend>
+        <label class="option">
+          <span>
+            <strong>Iluminação dinâmica</strong>
+            <small id="lighting-description">Sombras em movimento e luz dos ataques.</small>
+          </span>
+          <input id="dynamic-lighting" class="toggle" type="checkbox" aria-label="Iluminação dinâmica" aria-describedby="lighting-description" autocomplete="off">
+        </label>
+        <label class="option">
+          <span>
+            <strong>Texturas em alta resolução</strong>
+            <small id="textures-description">Mais detalhe em personagens e objetos.</small>
+          </span>
+          <input id="high-textures" class="toggle" type="checkbox" aria-label="Texturas em alta resolução" aria-describedby="textures-description" autocomplete="off">
+        </label>
+      </fieldset>
+      <p class="download" id="download-size" aria-live="polite"></p>
+      <button type="submit">Jogar</button>
+    </form>
+    <noscript><p>Ative o JavaScript para jogar.</p></noscript>
+  </main>
+
+  <section id="status" class="panel" hidden>
+    <p id="status-message" role="status">Carregando a masmorra…</p>
+    <progress id="progress" max="1" aria-label="Progresso do download"></progress>
+    <button id="retry" type="button" hidden>Voltar às opções</button>
+  </section>
+
+  <canvas id="canvas" hidden tabindex="0">O navegador não suporta o canvas do jogo.</canvas>
+
+  <script src="index.js"></script>
+  <script>
+    const GAME = __GAME_CONFIG__;
+    const STORAGE_KEY = 'cripta-de-cinzas:graficos';
+    const form = document.getElementById('graphics');
+    const launcher = document.getElementById('launcher');
+    const dynamicLighting = document.getElementById('dynamic-lighting');
+    const highTextures = document.getElementById('high-textures');
+    const downloadSize = document.getElementById('download-size');
+    const canvas = document.getElementById('canvas');
+    const statusPanel = document.getElementById('status');
+    const statusMessage = document.getElementById('status-message');
+    const progress = document.getElementById('progress');
+    const retry = document.getElementById('retry');
+    const formatMB = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 });
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      dynamicLighting.checked = saved?.dynamicLighting === true;
+      highTextures.checked = saved?.highTextures === true;
+    } catch {
+      // The settings still work when local storage is unavailable.
+    }
+
+    function selectedPack() {
+      return highTextures.checked ? GAME.hd : GAME.standard;
+    }
+
+    function updateDownloadSize() {
+      downloadSize.textContent = 'Download inicial: cerca de ' + formatMB.format(selectedPack().downloadMB) + ' MB';
+    }
+
+    form.addEventListener('change', () => {
+      updateDownloadSize();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          dynamicLighting: dynamicLighting.checked,
+          highTextures: highTextures.checked,
+        }));
+      } catch {
+        // Browsing modes that block storage keep these settings for this page.
+      }
+    });
+    updateDownloadSize();
+
+    function showError(message) {
+      statusMessage.textContent = message;
+      progress.hidden = true;
+      retry.hidden = false;
+      retry.focus();
+    }
+
+    retry.addEventListener('click', () => location.reload());
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (launcher.hidden) return;
+      launcher.hidden = true;
+      statusPanel.hidden = false;
+
+      try {
+        if (typeof Engine === 'undefined') {
+          showError('Não foi possível carregar o jogo.');
+          return;
+        }
+
+        if (Engine.getMissingFeatures({ threads: false }).length) {
+          showError('Este navegador precisa de WebGL 2 e WebAssembly para abrir o jogo.');
+          return;
+        }
+
+        const pack = selectedPack();
+        const engine = new Engine({
+          canvas,
+          executable: 'index',
+          fileSizes: { 'index.wasm': GAME.wasmSize, [pack.file]: pack.size },
+        });
+
+        await engine.startGame({
+          mainPack: pack.file,
+          args: dynamicLighting.checked ? [] : ['--', '--luz-fixa'],
+          onProgress(current, total) {
+            if (total > 0) progress.value = current / total;
+          },
+        });
+
+        statusPanel.remove();
+        document.body.classList.add('playing');
+        canvas.hidden = false;
+        canvas.focus();
+      } catch (error) {
+        console.error(error);
+        showError('O jogo não carregou. Volte às opções para tentar de novo.');
+      }
+    });
+  </script>
+</body>
+</html>
